@@ -1,77 +1,125 @@
 // src/components/MapView.jsx
-import { useEffect, useRef } from "react";
+import React from "react";
 
-export default function MapView({ regions }) {
-  const mapRef = useRef(null);
-  const mapInstanceRef = useRef(null);
+export default function MapView({ regions = [] }) {
+  console.log("MapView regions:", regions);
 
-  useEffect(() => {
-    // Kakao 지도 API 로드
-    const script = document.createElement("script");
-    script.src =
-      "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=카카오_JS_키_여기에";
-    script.async = true;
+  // 1) 데이터가 아예 없을 때
+  if (!regions.length) {
+    return (
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          minHeight: 240,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: 14,
+          color: "#999",
+          borderRadius: 8,
+          border: "1px solid #eee",
+          background: "#fafafa",
+        }}
+      >
+        지역 데이터를 불러오는 중입니다…
+      </div>
+    );
+  }
 
-    script.onload = () => {
-      window.kakao.maps.load(() => {
-        // 지도 생성
-        const center = new window.kakao.maps.LatLng(37.5665, 126.9780); // 서울 중심
-        const options = {
-          center,
-          level: 5,
-        };
+  // 2) 위도/경도 있는 지역만 추리기
+  const valid = regions.filter(
+    (r) =>
+      Number.isFinite(r.lat) &&
+      Number.isFinite(r.lng) &&
+      !(r.lat === 0 && r.lng === 0)
+  );
 
-        const map = new window.kakao.maps.Map(mapRef.current, options);
-        mapInstanceRef.current = map;
+  // 좌표가 하나도 없으면 일단 리스트라도 보여 주기 (디버깅용)
+  if (!valid.length) {
+    return (
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          minHeight: 240,
+          padding: 16,
+          borderRadius: 8,
+          border: "1px solid #eee",
+          background: "#fafafa",
+          fontSize: 14,
+          color: "#555",
+          overflowY: "auto",
+        }}
+      >
+        <p style={{ marginBottom: 8 }}>
+          위도/경도 정보가 없어 간단한 목록으로 표시합니다.
+        </p>
+        <ol style={{ paddingLeft: 20, margin: 0 }}>
+          {regions.map((r) => (
+            <li key={r.id}>
+              {r.name} ({r.gu})
+            </li>
+          ))}
+        </ol>
+      </div>
+    );
+  }
 
-        // TOP4 마커 찍기
-        regions.forEach((r) => {
-          if (!r.lat || !r.lng) return;
+  // 3) 간단한 점 지도용 스케일 계산
+  const lats = valid.map((r) => r.lat);
+  const lngs = valid.map((r) => r.lng);
 
-          const markerPos = new window.kakao.maps.LatLng(r.lat, r.lng);
-          const marker = new window.kakao.maps.Marker({
-            position: markerPos,
-            map,
-          });
+  const minLat = Math.min(...lats);
+  const maxLat = Math.max(...lats);
+  const minLng = Math.min(...lngs);
+  const maxLng = Math.max(...lngs);
 
-          const iwContent = `
-            <div style="padding:8px;font-size:13px;">
-              <b>${r.name}</b> (${r.gu})<br/>
-              주거: ${r.housing}<br/>
-              생활: ${r.life}<br/>
-              치안: ${r.safety}<br/>
-              교통: ${r.transport}
-            </div>
-          `;
-          const infowindow = new window.kakao.maps.InfoWindow({
-            content: iwContent,
-          });
-
-          window.kakao.maps.event.addListener(marker, "click", () => {
-            infowindow.open(map, marker);
-          });
-        });
-      });
-    };
-
-    document.head.appendChild(script);
-
-    return () => {
-      // cleanup
-      if (mapInstanceRef.current) {
-        mapInstanceRef.current = null;
-      }
-    };
-  }, [regions]);
+  const latSpan = maxLat - minLat || 0.01;
+  const lngSpan = maxLng - minLng || 0.01;
 
   return (
     <div
-      ref={mapRef}
       style={{
+        position: "relative",
         width: "100%",
         height: "100%",
-        borderRadius: "10px",
+        minHeight: 240,
+        borderRadius: 8,
+        background: "#f5f5f7",
+        border: "1px solid #eee",
+        overflow: "hidden",
       }}
-    />
+    >
+      {valid.map((r) => {
+        const x = ((r.lng - minLng) / lngSpan) * 100;
+        const y = ((maxLat - r.lat) / latSpan) * 100; // 위쪽이 0이 되도록 뒤집기
+
+        return (
+          <div
+            key={r.id}
+            title={`${r.name} (${r.gu})`}
+            style={{
+              position: "absolute",
+              left: `${x}%`,
+              top: `${y}%`,
+              transform: "translate(-50%, -50%)",
+              pointerEvents: "none",
+            }}
+          >
+            <div
+              style={{
+                width: 12,
+                height: 12,
+                borderRadius: "999px",
+                background: "#4f46e5",
+                border: "2px solid #ffffff",
+                boxShadow: "0 0 4px rgba(0,0,0,0.15)",
+              }}
+            />
+          </div>
+        );
+      })}
+    </div>
   );
 }
