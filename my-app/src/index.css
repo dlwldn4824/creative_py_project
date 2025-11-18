@@ -66,3 +66,32 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+.life-page {
+  padding: 24px;
+}
+
+.life-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.life-table th,
+.life-table td {
+  border-bottom: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.active-row {
+  background: #e0f2fe;
+}
+
+.life-charts {
+  margin-top: 40px;
+}
+
+.chart-row {
+  display: flex;
+  gap: 40px;
+}

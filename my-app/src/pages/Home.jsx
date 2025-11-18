@@ -1,5 +1,6 @@
 // src/pages/Home.jsx
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom"; // ✅ 추가
 import SliderRow from "../components/SliderRow.jsx";
 import DetailPanel from "../components/DetailPanel.jsx";
 import MapView from "../components/MapView.jsx";
@@ -78,6 +79,8 @@ export default function Home() {
   const [selectedGu, setSelectedGu] = useState("전체");
   const [selectedRegion, setSelectedRegion] = useState(null);
 
+  const navigate = useNavigate(); // ✅ 네비게이터
+
   // ✅ CSV 파싱
   useEffect(() => {
     try {
@@ -123,8 +126,6 @@ export default function Home() {
     return result;
   }, [filteredRegions, weights, selectedGu]);
 
-  // ✅ 왼쪽 동그라미용 TOP 4
-  const top4 = useMemo(() => scoredRegions.slice(0, 4), [scoredRegions]);
   // ✅ 리스트 & 지도용 TOP 10
   const top10 = useMemo(() => scoredRegions.slice(0, 10), [scoredRegions]);
 
@@ -203,24 +204,79 @@ export default function Home() {
             <span className="weight-tip">슬라이더로 중요도를 조절해 보세요</span>
           </div>
 
-          {/* 동그라미 TOP 4 */}
+          {/* ✅ 카테고리별 상세 페이지 버튼 4개 */}
           <div className="bubble-card">
-            {top4.map((r, idx) => (
-              <button
-                key={r.id}
-                className={
-                  "bubble-item" +
-                  (selectedRegion?.id === r.id ? " bubble-item--active" : "")
-                }
-                onClick={() => setSelectedRegion(r)}
-              >
-                <span className="bubble-circle">{idx + 1}</span>
-                <span className="bubble-label">{r.name}</span>
-              </button>
-            ))}
-            {!top4.length && (
-              <div className="bubble-empty">데이터를 불러오는 중입니다…</div>
-            )}
+            <button
+              className="bubble-item bubble-item--category"
+              onClick={() =>
+                navigate("/housing", {
+                  state: {
+                    category: "housing",
+                    selectedGu,
+                    weights,
+                    top10,
+                    allRegions: scoredRegions,
+                  },
+                })
+              }
+            >
+              <span className="bubble-circle">주거</span>
+              <span className="bubble-label">주거 상세 보기</span>
+            </button>
+
+            <button
+              className="bubble-item bubble-item--category"
+              onClick={() =>
+                navigate("/life", {
+                  state: {
+                    category: "life",
+                    selectedGu,
+                    weights,
+                    top10,
+                    allRegions: scoredRegions,
+                  },
+                })
+              }
+            >
+              <span className="bubble-circle">생활</span>
+              <span className="bubble-label">생활 인프라 상세</span>
+            </button>
+
+            <button
+              className="bubble-item bubble-item--category"
+              onClick={() =>
+                navigate("/safety", {
+                  state: {
+                    category: "safety",
+                    selectedGu,
+                    weights,
+                    top10,
+                    allRegions: scoredRegions,
+                  },
+                })
+              }
+            >
+              <span className="bubble-circle">치안</span>
+              <span className="bubble-label">치안/안전 상세</span>
+            </button>
+
+            <button
+              className="bubble-item bubble-item--category"
+              onClick={() =>
+                navigate("/transport", {
+                  state: {
+                    category: "transport",
+                    selectedGu,
+                    weights,
+                    top10,
+                    allRegions: scoredRegions,
+                  },
+                })
+              }
+            >
+              <span className="bubble-circle">교통</span>
+              <span className="bubble-label">교통 접근성 상세</span>
+            </button>
           </div>
         </section>
 
@@ -236,7 +292,6 @@ export default function Home() {
 
           {/* 하단 결과 + 상세/저장 */}
           <div className="result-bottom">
-            {/* ✅ Gu/가중치 바뀔 때마다 리스트 강제 리마운트 */}
             <div
               className="result-list"
               key={selectedGu + JSON.stringify(weights)}
@@ -282,7 +337,7 @@ export default function Home() {
                 저장하기
               </button>
 
-              <DetailPanel region={selectedRegion} weights={weights} />
+                <DetailPanel region={selectedRegion} weights={weights} />
             </div>
           </div>
         </section>
