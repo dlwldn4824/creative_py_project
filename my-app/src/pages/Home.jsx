@@ -146,7 +146,7 @@ export default function Home() {
   return (
     <div className="app-root">
       <header className="app-header">
-        <div className="logo">로고</div>
+        <div className="logo">다이어터</div>
         <div className="header-text">
           <h1>나에게 맞는 주거 지역은?</h1>
           <p>높아지는 서울 주거비, 자신에게 최적화된 지역에 거주하기 위한 웹/앱</p>

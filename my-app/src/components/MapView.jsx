@@ -1,124 +1,109 @@
 // src/components/MapView.jsx
-import React from "react";
+import { useEffect, useMemo, useRef } from "react";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import "./MapView.css";
 
-export default function MapView({ regions, onSelectRegion, selectedId }) {
-  console.log("🔥 MapView regions:", regions);
+export default function MapView({ regions }) {
+  const mapContainerRef = useRef(null);       // DOM
+  const mapInstanceRef = useRef(null);        // Leaflet map
+  const markersLayerRef = useRef(null);       // 마커 레이어 그룹
 
-  const list = Array.isArray(regions) ? regions : [];
-
-  const baseStyle = {
-    position: "relative",
-    width: "100%",
-    height: "100%",
-    minHeight: 240,
-    borderRadius: 8,
-    background: "#f5f5f7",
-    border: "1px solid #eee",
-    overflow: "hidden",
-    fontSize: 14,
-  };
-
-  // 1. 데이터 없음
-  if (list.length === 0) {
-    return (
-      <div style={baseStyle}>
-        <div
-          style={{
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "#999",
-          }}
-        >
-          지역 데이터를 불러오는 중입니다…
-        </div>
-      </div>
+  // 위경도 있는 애들만 필터
+  const visibleRegions = useMemo(() => {
+    if (!regions || !regions.length) return [];
+    return regions.filter(
+      (r) =>
+        Number.isFinite(r.lat) &&
+        Number.isFinite(r.lng) &&
+        r.lat !== 0 &&
+        r.lng !== 0
     );
-  }
+  }, [regions]);
 
-  // 2. 유효한 lat/lng
-  const valid = list.filter(
-    (r) =>
-      Number.isFinite(r.lat) &&
-      Number.isFinite(r.lng) &&
-      !(r.lat === 0 && r.lng === 0)
-  );
+  // 최초 1번: 지도 생성
+  useEffect(() => {
+    if (!mapContainerRef.current) return;
+    if (mapInstanceRef.current) return; // 이미 만들어졌으면 스킵
 
-  // lat/lng 없으면 리스트로 보여주기
-  if (valid.length === 0) {
-    return (
-      <div style={baseStyle}>
-        <div
-          style={{
-            padding: 16,
-            height: "100%",
-            overflowY: "auto",
-            color: "#555",
-          }}
-        >
-          <p style={{ marginBottom: 8 }}>
-            위도/경도 정보가 없어 간단한 목록으로 표시합니다.
-          </p>
-          <ol style={{ paddingLeft: 20, margin: 0 }}>
-            {list.map((r) => (
-              <li key={r.id}>
-                {r.name} ({r.gu})
-              </li>
-            ))}
-          </ol>
-        </div>
-      </div>
-    );
-  }
+    // 서울 시청 근처를 초기 중심으로
+    const map = L.map(mapContainerRef.current, {
+      center: [37.5665, 126.978],
+      zoom: 11,
+      zoomControl: true,
+    });
 
-  // 3. 점 지도 스케일 계산
-  const lats = valid.map((r) => r.lat);
-  const lngs = valid.map((r) => r.lng);
+    // OSM 타일 레이어
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>',
+      maxZoom: 18,
+    }).addTo(map);
 
-  const minLat = Math.min(...lats);
-  const maxLat = Math.max(...lats);
-  const minLng = Math.min(...lngs);
-  const maxLng = Math.max(...lngs);
+    mapInstanceRef.current = map;
+    markersLayerRef.current = L.layerGroup().addTo(map);
 
-  const latSpan = maxLat - minLat || 0.01;
-  const lngSpan = maxLng - minLng || 0.01;
+    // 언마운트 시 정리
+    return () => {
+      map.remove();
+      mapInstanceRef.current = null;
+      markersLayerRef.current = null;
+    };
+  }, []);
+
+  // regions가 바뀔 때마다 마커 다시 찍기
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    const layer = markersLayerRef.current;
+    if (!map || !layer) return;
+
+    // 이전 마커 제거
+    layer.clearLayers();
+
+    if (!visibleRegions.length) return;
+
+    const bounds = [];
+
+    visibleRegions.forEach((r, idx) => {
+      const lat = r.lat;
+      const lng = r.lng;
+      const isTop3 = idx < 3;
+
+      // 기본 마커 아이콘은 번들 경로 이슈가 있어서 circleMarker로
+      const marker = L.circleMarker([lat, lng], {
+        radius: isTop3 ? 9 : 7,
+        weight: 2,
+        color: isTop3 ? "#ff4d4f" : "#4f7cff",
+        fillColor: isTop3 ? "#ff7875" : "#7c9cff",
+        fillOpacity: 0.9,
+      });
+
+      // 팝업 내용 (원하면 더 꾸며도 됨)
+      const scoreText =
+        typeof r.score === "number" && Number.isFinite(r.score)
+          ? r.score.toFixed(3)
+          : "-";
+
+      marker.bindPopup(
+        `<b>${idx + 1}위</b> ${r.gu} ${r.name}<br/>총점: ${scoreText}`
+      );
+
+      marker.addTo(layer);
+      bounds.push([lat, lng]);
+    });
+
+    // 모든 마커가 보이도록 줌 & 위치 조정
+    if (bounds.length) {
+      map.fitBounds(bounds, { padding: [40, 40] });
+    }
+  }, [visibleRegions]);
 
   return (
-    <div style={baseStyle}>
-      {valid.map((r) => {
-        const x = ((r.lng - minLng) / lngSpan) * 100;
-        const y = ((maxLat - r.lat) / latSpan) * 100;
-
-        const isActive = selectedId && selectedId === r.id;
-
-        return (
-          <div
-            key={r.id}
-            title={`${r.name} (${r.gu})`}
-            style={{
-              position: "absolute",
-              left: `${x}%`,
-              top: `${y}%`,
-              transform: "translate(-50%, -50%)",
-              cursor: onSelectRegion ? "pointer" : "default",
-            }}
-            onClick={() => onSelectRegion && onSelectRegion(r)}
-          >
-            <div
-              style={{
-                width: isActive ? 16 : 12,
-                height: isActive ? 16 : 12,
-                borderRadius: "999px",
-                background: isActive ? "#dc2626" : "#4f46e5",
-                border: "2px solid #ffffff",
-                boxShadow: "0 0 4px rgba(0,0,0,0.15)",
-              }}
-            />
-          </div>
-        );
-      })}
+    <div className="map-container">
+      <div ref={mapContainerRef} className="map-leaflet-root" />
+      {!visibleRegions.length && (
+        <div className="map-empty-overlay">표시할 위치 정보가 없습니다.</div>
+      )}
     </div>
   );
 }
