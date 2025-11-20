@@ -21,7 +21,6 @@ function mapRowToRegion(row, index) {
   const gu = (row["자치구"] || row["구명"] || row["구"] || "").trim();
 
   return {
-    // ✅ 구-동 조합으로 id 고정 (겹침 방지)
     id: name && gu ? `${gu}-${name}` : `row-${index}`,
     name,
     gu,
@@ -31,6 +30,9 @@ function mapRowToRegion(row, index) {
     safety: Number(row["치안점수"] || 0),
     life: Number(row["생활점수"] || row["생활점수_y"] || 0),
 
+    // 👉 앞으로 추가할 세부 컬럼 자리 (예: 평균 월세)
+    avgRent: Number(row["평균월세"] || 0),
+
     lat: Number(row["위도"] || row["lat"] || row["LAT"] || 0),
     lng: Number(row["경도"] || row["lng"] || row["LNG"] || 0),
     nearestStation: row["가장가까운역"] || "",
@@ -39,8 +41,12 @@ function mapRowToRegion(row, index) {
     parkCount: Number(row["공원수"] || 0),
     hospitalCount: Number(row["병의원수"] || 0),
     shopCount: Number(row["점포수"] || 0),
+
+    // ⭐ 원본 컬럼 전부
+    raw: row,
   };
 }
+
 
 /** CSV 텍스트 → region 배열 */
 function parseCsv(text) {

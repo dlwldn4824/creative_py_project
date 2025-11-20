@@ -1,0 +1,99 @@
+.detail-panel {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 16px 20px;
+  background: #ffffff;
+  border-radius: 0 0 16px 0; /* 레이아웃에 맞게 조절 */
+  font-size: 14px;
+  color: #1f2430;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: hidden;
+}
+
+.detail-empty {
+  margin: 0;
+  color: #8a8fa5;
+  line-height: 1.6;
+}
+
+.detail-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.detail-score-block {
+  font-size: 13px;
+}
+
+.detail-score-main {
+  margin-bottom: 4px;
+}
+
+.detail-score-main strong {
+  font-size: 20px;
+  font-weight: 800;
+  margin-left: 4px;
+}
+
+.detail-score-sub {
+  color: #596080;
+}
+
+.detail-section {
+  border-top: 1px solid #eef1f8;
+  padding-top: 8px;
+}
+
+.detail-section h4 {
+  margin: 0 0 4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #444a63;
+}
+
+.detail-section ul {
+  margin: 0;
+  padding-left: 16px;
+}
+
+.detail-section li {
+  margin: 2px 0;
+}
+
+/* 원본 컬럼 표 */
+.detail-raw {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.detail-raw-table-wrapper {
+  flex: 1;
+  overflow: auto;
+  border: 1px solid #eef1f8;
+  border-radius: 8px;
+}
+
+.detail-raw-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.detail-raw-table th,
+.detail-raw-table td {
+  padding: 4px 6px;
+  border-bottom: 1px solid #f1f2f7;
+  text-align: left;
+}
+
+.detail-raw-table th {
+  background: #f7f8fc;
+  white-space: nowrap;
+  color: #555b76;
+}

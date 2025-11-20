@@ -4,12 +4,11 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./MapView.css";
 
-export default function MapView({ regions }) {
-  const mapContainerRef = useRef(null);       // DOM
-  const mapInstanceRef = useRef(null);        // Leaflet map
-  const markersLayerRef = useRef(null);       // 마커 레이어 그룹
+export default function MapView({ regions, onSelectRegion }) {
+  const mapContainerRef = useRef(null);
+  const mapInstanceRef = useRef(null);
+  const markersLayerRef = useRef(null);
 
-  // 위경도 있는 애들만 필터
   const visibleRegions = useMemo(() => {
     if (!regions || !regions.length) return [];
     return regions.filter(
@@ -21,19 +20,16 @@ export default function MapView({ regions }) {
     );
   }, [regions]);
 
-  // 최초 1번: 지도 생성
   useEffect(() => {
     if (!mapContainerRef.current) return;
-    if (mapInstanceRef.current) return; // 이미 만들어졌으면 스킵
+    if (mapInstanceRef.current) return;
 
-    // 서울 시청 근처를 초기 중심으로
     const map = L.map(mapContainerRef.current, {
       center: [37.5665, 126.978],
       zoom: 11,
       zoomControl: true,
     });
 
-    // OSM 타일 레이어
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>',
@@ -43,7 +39,6 @@ export default function MapView({ regions }) {
     mapInstanceRef.current = map;
     markersLayerRef.current = L.layerGroup().addTo(map);
 
-    // 언마운트 시 정리
     return () => {
       map.remove();
       mapInstanceRef.current = null;
@@ -51,15 +46,12 @@ export default function MapView({ regions }) {
     };
   }, []);
 
-  // regions가 바뀔 때마다 마커 다시 찍기
   useEffect(() => {
     const map = mapInstanceRef.current;
     const layer = markersLayerRef.current;
     if (!map || !layer) return;
 
-    // 이전 마커 제거
     layer.clearLayers();
-
     if (!visibleRegions.length) return;
 
     const bounds = [];
@@ -69,7 +61,6 @@ export default function MapView({ regions }) {
       const lng = r.lng;
       const isTop3 = idx < 3;
 
-      // 기본 마커 아이콘은 번들 경로 이슈가 있어서 circleMarker로
       const marker = L.circleMarker([lat, lng], {
         radius: isTop3 ? 9 : 7,
         weight: 2,
@@ -78,7 +69,6 @@ export default function MapView({ regions }) {
         fillOpacity: 0.9,
       });
 
-      // 팝업 내용 (원하면 더 꾸며도 됨)
       const scoreText =
         typeof r.score === "number" && Number.isFinite(r.score)
           ? r.score.toFixed(3)
@@ -88,15 +78,19 @@ export default function MapView({ regions }) {
         `<b>${idx + 1}위</b> ${r.gu} ${r.name}<br/>총점: ${scoreText}`
       );
 
+      // ⭐ 마커 클릭 시 부모에 선택 알리기
+      marker.on("click", () => {
+        if (onSelectRegion) onSelectRegion(r);
+      });
+
       marker.addTo(layer);
       bounds.push([lat, lng]);
     });
 
-    // 모든 마커가 보이도록 줌 & 위치 조정
     if (bounds.length) {
       map.fitBounds(bounds, { padding: [40, 40] });
     }
-  }, [visibleRegions]);
+  }, [visibleRegions, onSelectRegion]);
 
   return (
     <div className="map-container">
