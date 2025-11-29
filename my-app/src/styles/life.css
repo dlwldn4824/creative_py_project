@@ -16,7 +16,7 @@
 
 /* 타이틀 스타일 */
 .life-section h2 {
-  font-size: 26px;
+  font-size: 30px;
   font-weight: 800;
   margin-bottom: 16px;
   color: #1e293b;
@@ -214,7 +214,7 @@
 }
 
 .life-section p {
-  font-size: 13px;
+  font-size: 16px;
   color: #64748b;
   margin-bottom: 16px;
 }
@@ -256,7 +256,7 @@
 }
 
 .grid-item h2 {
-  font-size: 20px;
+  font-size: 23px;
   font-weight: 700;
   margin: 0 0 18px 0;
   color: #1e293b;
@@ -274,7 +274,7 @@
 }
 
 .grid-item p {
-  font-size: 13px;
+  font-size: 16px;
   color: #64748b;
   margin: 0 0 16px 0;
 }
@@ -286,7 +286,7 @@
 .life-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14px;
+  font-size: 16px;
   background: #ffffff;
   border-radius: 12px;
   overflow: hidden;
@@ -299,7 +299,7 @@
   padding: 14px 12px;
   text-align: left;
   font-weight: 700;
-  font-size: 13px;
+  font-size: 16px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -352,7 +352,7 @@
 
 .summary-card h3 {
   margin: 0 0 16px;
-  font-size: 18px;
+  font-size: 23px;
   font-weight: 800;
   color: #1e293b;
   display: flex;
@@ -362,7 +362,7 @@
 
 .summary-card h3::before {
   content: '📍';
-  font-size: 20px;
+  font-size: 23px;
 }
 
 .summary-card ul {
@@ -370,7 +370,7 @@
   padding: 0;
   margin: 0;
   line-height: 1.8;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .summary-card ul li {
@@ -397,7 +397,7 @@
 .heatmap-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14px;
+  font-size: 16px;
   background: #ffffff;
   border-radius: 12px;
   overflow: hidden;

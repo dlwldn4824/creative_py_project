@@ -6,7 +6,7 @@
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Noto Sans KR", sans-serif;
+  font-family: "Nanum Square Round", -apple-system, BlinkMacSystemFont, "Noto Sans KR", sans-serif;
   background: #fafafa;
 }
 
@@ -33,7 +33,7 @@ body {
 
 .header-text h1 {
   margin: 0;
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 700;
   color: white;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -41,7 +41,7 @@ body {
 
 .header-text p {
   margin: 6px 0 0;
-  font-size: 15px;
+  font-size: 18px;
   color: rgba(255, 255, 255, 0.9);
 }
 
@@ -55,7 +55,7 @@ body {
   justify-content: center;
   border-radius: 12px;
   font-weight: 700;
-  font-size: 20px;
+  font-size: 24px;
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -71,7 +71,7 @@ body {
 .chip {
   padding: 6px 14px;
   border-radius: 999px;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 600;
   background: rgba(255, 255, 255, 0.14);
   backdrop-filter: blur(4px);
@@ -143,7 +143,7 @@ body {
   background: #f8f9fa;
   padding: 6px 12px;
   border-radius: 8px;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 600;
   color: #495057;
 }
@@ -153,7 +153,7 @@ body {
   padding: 8px 12px;
   border-radius: 8px;
   border: 1px solid #e2e8f0;
-  font-size: 13px;
+  font-size: 16px;
   background: #fff;
   cursor: pointer;
 }
@@ -173,14 +173,14 @@ body {
 }
 
 .info-card-title {
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 700;
   color: #1e293b;
   margin: 0 0 6px 0;
 }
 
 .info-card-desc {
-  font-size: 11px;
+  font-size: 13px;
   color: #64748b;
   margin: 0;
   line-height: 1.5;
@@ -212,13 +212,13 @@ body {
 }
 
 .slider-info-label {
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 600;
   color: #1e293b;
 }
 
 .slider-info-desc {
-  font-size: 10px;
+  font-size: 12px;
   color: #64748b;
 }
 
@@ -230,7 +230,7 @@ body {
 
 .slider-label {
   min-width: 52px;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 700;
   border-radius: 999px;
   padding: 5px 12px;
@@ -341,7 +341,7 @@ body {
 .slider-value {
   width: 42px;
   text-align: right;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 600;
   color: #495057;
 }
@@ -350,7 +350,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 12px;
+  font-size: 16px;
   margin-top: 4px;
 }
 
@@ -360,7 +360,7 @@ body {
   border: 1px solid #e2e8f0;
   background: #fff;
   color: #495057;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -373,7 +373,7 @@ body {
 
 .weight-tip {
   color: #6b7280;
-  font-size: 11px;
+  font-size: 13px;
 }
 
 /* 버블 카드 (카테고리 버튼) */
@@ -418,7 +418,7 @@ body {
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 18px;
   border: 3px solid transparent;
   color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
@@ -451,7 +451,7 @@ body {
 }
 
 .bubble-label {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
   color: #374151;
   text-align: center;
@@ -468,7 +468,7 @@ body {
 }
 
 .weight-summary-title {
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 700;
   color: #1e293b;
   margin: 0 0 12px 0;
@@ -490,7 +490,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
   color: #475569;
 }
@@ -541,7 +541,7 @@ body {
 
 .map-header {
   font-weight: 700;
-  font-size: 16px;
+  font-size: 18px;
   color: #1e293b;
   display: flex;
   justify-content: space-between;
@@ -573,7 +573,7 @@ body {
 }
 
 .result-list h2 {
-  font-size: 18px;
+  font-size: 21px;
   font-weight: 800;
   margin: 0 0 16px 0;
   color: #1e293b;
@@ -613,7 +613,7 @@ body {
   width: 28px;
   text-align: center;
   font-weight: 800;
-  font-size: 16px;
+  font-size: 18px;
   color: #1e3a8a;
   display: flex;
   align-items: center;
@@ -629,14 +629,14 @@ body {
 }
 
 .result-name {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   color: #1e293b;
   margin-bottom: 2px;
 }
 
 .result-sub {
-  font-size: 11px;
+  font-size: 13px;
   color: #6b7280;
   line-height: 1.4;
 }
@@ -654,7 +654,7 @@ body {
   border: none;
   background: #93c5fd;
   color: #1e3a8a;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -673,7 +673,7 @@ body {
   background: #ffffff;
   border-radius: 12px;
   padding: 16px;
-  font-size: 12px;
+  font-size: 16px;
   border: 2px solid #93c5fd;
   box-shadow: 0 2px 8px rgba(147, 197, 253, 0.15);
   position: relative;
@@ -692,7 +692,7 @@ body {
 
 .detail-panel h3 {
   margin: 0 0 10px 0;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: #1e293b;
 }
@@ -707,7 +707,7 @@ body {
 .detail-score {
   margin: 0 0 8px 0;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 16px;
   color: #3b82f6;
 }
 
@@ -721,7 +721,7 @@ body {
 .tag {
   padding: 4px 10px;
   border-radius: 999px;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
 }
 
@@ -743,7 +743,7 @@ body {
 
 .detail-note {
   margin: 8px 0 0 0;
-  font-size: 11px;
+  font-size: 13px;
   color: #94a3b8;
   font-style: italic;
 }
