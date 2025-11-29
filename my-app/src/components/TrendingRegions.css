@@ -1,0 +1,169 @@
+.trending-regions {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+}
+
+.trending-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #93c5fd;
+}
+
+.trending-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.trending-icon {
+  font-size: 18px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.trending-badge {
+  background: #ef4444;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.trending-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.trending-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #f8fafc;
+  border: 1px solid transparent;
+}
+
+.trending-item:hover {
+  background: #dbeafe;
+  border-color: #93c5fd;
+  transform: translateX(4px);
+}
+
+.trending-item.trending-up {
+  animation: slideUp 0.5s ease-out;
+}
+
+.trending-item.trending-down {
+  animation: slideDown 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(10px);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  0% {
+    transform: translateY(-10px);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.trending-rank {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 40px;
+  gap: 2px;
+}
+
+.rank-number {
+  font-size: 18px;
+  font-weight: 800;
+  color: #93c5fd;
+  line-height: 1;
+}
+
+.rank-change {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.rank-change.up {
+  color: #059669;
+  background: #d1fae5;
+}
+
+.rank-change.down {
+  color: #dc2626;
+  background: #fee2e2;
+}
+
+.trending-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.trending-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.trending-views {
+  font-size: 11px;
+  color: #64748b;
+}
+

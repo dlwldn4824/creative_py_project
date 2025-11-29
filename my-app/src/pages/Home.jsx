@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom"; // ✅ 추가
 import SliderRow from "../components/SliderRow.jsx";
 import DetailPanel from "../components/DetailPanel.jsx";
 import MapView from "../components/MapView.jsx";
+import TrendingRegions from "../components/TrendingRegions.jsx";
 
 // ✅ Vite: CSV를 문자열로 바로 import
 import csvText from "../data/최종_이사점수_병합완료.csv?raw";
@@ -236,6 +237,15 @@ export default function Home() {
       <main className="app-main">
         {/* 왼쪽 패널 */}
         <section className="left-panel">
+          {/* 실시간 인기 지역 */}
+          <TrendingRegions
+            onSelectRegion={(region) => {
+              // 실시간 인기 지역 클릭 시 해당 구로 필터링
+              setSelectedGu(region.name);
+              setSelectedRegion(null);
+            }}
+          />
+
           <div className="gu-select-row">
             <label className="gu-label">서울 ▾</label>
             <select
