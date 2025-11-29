@@ -65,22 +65,23 @@ export default function MapView({ regions, onSelectRegion, selectedRegion }) {
       // 선택된 지역은 노란색, TOP 3는 빨간색, 나머지는 파란색
       let color, fillColor;
       if (isSelected) {
-        color = "#fbbf24";
-        fillColor = "#fcd34d";
+        color = "#f59e0b";
+        fillColor = "#fbbf24";
       } else if (isTop3) {
-        color = "#ff4d4f";
-        fillColor = "#ff7875";
+        color = "#dc2626";
+        fillColor = "#ef4444";
       } else {
-        color = "#4f7cff";
-        fillColor = "#7c9cff";
+        color = "#2563eb";
+        fillColor = "#3b82f6";
       }
 
       const marker = L.circleMarker([lat, lng], {
-        radius: isSelected ? 12 : isTop3 ? 9 : 7,
-        weight: isSelected ? 3 : 2,
+        radius: isSelected ? 16 : isTop3 ? 14 : 12,
+        weight: isSelected ? 4 : isTop3 ? 3 : 3,
         color: color,
         fillColor: fillColor,
-        fillOpacity: 0.9,
+        fillOpacity: 0.95,
+        opacity: 1,
       });
 
       const scoreText =
@@ -106,9 +107,10 @@ export default function MapView({ regions, onSelectRegion, selectedRegion }) {
       const selectedLat = selectedRegion.lat;
       const selectedLng = selectedRegion.lng;
       if (Number.isFinite(selectedLat) && Number.isFinite(selectedLng)) {
+        // 애니메이션 최소화 - 짧은 시간으로 부드럽게 이동
         map.setView([selectedLat, selectedLng], 14, {
           animate: true,
-          duration: 0.5,
+          duration: 0.15,
         });
       }
     } else if (bounds.length) {

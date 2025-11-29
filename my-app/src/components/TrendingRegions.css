@@ -82,7 +82,6 @@
 .trending-item:hover {
   background: #dbeafe;
   border-color: #93c5fd;
-  transform: translateX(4px);
 }
 
 .trending-item.trending-up {

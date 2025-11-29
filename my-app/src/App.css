@@ -83,8 +83,7 @@ body {
 
 .chip:hover {
   background: rgba(255, 255, 255, 0.25);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .chip-home { border-color: rgba(251, 207, 232, 0.6); background: rgba(251, 207, 232, 0.2); }
@@ -599,7 +598,6 @@ body {
 
 .result-row:hover {
   background: #dbeafe;
-  transform: translateX(4px);
 }
 
 .result-row--active {
@@ -663,8 +661,7 @@ body {
 
 .btn-primary:hover {
   background: #60a5fa;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(147, 197, 253, 0.4);
+  box-shadow: 0 3px 6px rgba(147, 197, 253, 0.3);
 }
 
 /* 상세 패널 */

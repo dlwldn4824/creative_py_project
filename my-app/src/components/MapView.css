@@ -34,3 +34,14 @@
   border-radius: 12px;
   overflow: hidden;
 }
+
+/* 지도 마커 가시성 개선 */
+.leaflet-interactive {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  transition: all 0.15s ease;
+}
+
+.leaflet-interactive:hover {
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.35));
+  transform: scale(1.03);
+}

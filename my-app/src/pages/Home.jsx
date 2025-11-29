@@ -1,6 +1,6 @@
 // src/pages/Home.jsx
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom"; // ✅ 추가
+import { useNavigate, useLocation } from "react-router-dom"; // ✅ 추가
 import SliderRow from "../components/SliderRow.jsx";
 import DetailPanel from "../components/DetailPanel.jsx";
 import MapView from "../components/MapView.jsx";
@@ -86,6 +86,8 @@ export default function Home() {
   const [selectedRegion, setSelectedRegion] = useState(null);
 
   const navigate = useNavigate(); // ✅ 네비게이터
+  const location = useLocation();
+  const currentPath = location.pathname;
 
   // ✅ CSV 파싱
   useEffect(() => {
@@ -209,24 +211,44 @@ export default function Home() {
           <button
             className="chip chip-home"
             onClick={() => navigate("/housing")}
+            style={{
+              background: currentPath === "/housing" ? "#fbcfe8" : "rgba(255, 255, 255, 0.9)",
+              color: currentPath === "/housing" ? "#831843" : "#000",
+              border: currentPath === "/housing" ? "1px solid #fbcfe8" : "1px solid rgba(255, 255, 255, 0.3)"
+            }}
           >
             주거
           </button>
           <button
             className="chip chip-life"
             onClick={() => navigate("/life")}
+            style={{
+              background: currentPath === "/life" ? "#86efac" : "rgba(255, 255, 255, 0.9)",
+              color: currentPath === "/life" ? "#14532d" : "#000",
+              border: currentPath === "/life" ? "1px solid #86efac" : "1px solid rgba(255, 255, 255, 0.3)"
+            }}
           >
             생활
           </button>
           <button
             className="chip chip-safe"
             onClick={() => navigate("/safety")}
+            style={{
+              background: currentPath === "/safety" ? "#93c5fd" : "rgba(255, 255, 255, 0.9)",
+              color: currentPath === "/safety" ? "#1e3a8a" : "#000",
+              border: currentPath === "/safety" ? "1px solid #93c5fd" : "1px solid rgba(255, 255, 255, 0.3)"
+            }}
           >
             치안
           </button>
           <button
             className="chip chip-traffic"
             onClick={() => navigate("/transport")}
+            style={{
+              background: currentPath === "/transport" ? "#fde68a" : "rgba(255, 255, 255, 0.9)",
+              color: currentPath === "/transport" ? "#78350f" : "#000",
+              border: currentPath === "/transport" ? "1px solid #fde68a" : "1px solid rgba(255, 255, 255, 0.3)"
+            }}
           >
             교통
           </button>

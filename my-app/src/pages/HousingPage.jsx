@@ -1,6 +1,6 @@
 // src/pages/HousingPage.jsx
 import React, { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import csvText from "../data/final_data.csv?raw";
 import {
   ResponsiveContainer,
@@ -31,8 +31,11 @@ function parseCsv(text) {
 
 export default function HousingPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [rows, setRows] = useState([]);
   const [selectedDong, setSelectedDong] = useState(null);
+  
+  const currentPath = location.pathname;
 
   useEffect(() => {
     const parsed = parseCsv(csvText);
@@ -139,28 +142,44 @@ export default function HousingPage() {
           <button
             className="chip chip-home"
             onClick={() => navigate("/housing")}
-            style={{ color: "#000" }}
+            style={{
+              background: currentPath === "/housing" ? "#fbcfe8" : "rgba(255, 255, 255, 0.9)",
+              color: currentPath === "/housing" ? "#831843" : "#000",
+              border: currentPath === "/housing" ? "1px solid #fbcfe8" : "1px solid rgba(255, 255, 255, 0.3)"
+            }}
           >
             주거
           </button>
           <button
             className="chip chip-life"
             onClick={() => navigate("/life")}
-            style={{ color: "#000" }}
+            style={{
+              background: currentPath === "/life" ? "#86efac" : "rgba(255, 255, 255, 0.9)",
+              color: currentPath === "/life" ? "#14532d" : "#000",
+              border: currentPath === "/life" ? "1px solid #86efac" : "1px solid rgba(255, 255, 255, 0.3)"
+            }}
           >
             생활
           </button>
           <button
             className="chip chip-safe"
             onClick={() => navigate("/safety")}
-            style={{ color: "#000" }}
+            style={{
+              background: currentPath === "/safety" ? "#93c5fd" : "rgba(255, 255, 255, 0.9)",
+              color: currentPath === "/safety" ? "#1e3a8a" : "#000",
+              border: currentPath === "/safety" ? "1px solid #93c5fd" : "1px solid rgba(255, 255, 255, 0.3)"
+            }}
           >
             치안
           </button>
           <button
             className="chip chip-traffic"
             onClick={() => navigate("/transport")}
-            style={{ color: "#000" }}
+            style={{
+              background: currentPath === "/transport" ? "#fde68a" : "rgba(255, 255, 255, 0.9)",
+              color: currentPath === "/transport" ? "#78350f" : "#000",
+              border: currentPath === "/transport" ? "1px solid #fde68a" : "1px solid rgba(255, 255, 255, 0.3)"
+            }}
           >
             교통
           </button>
