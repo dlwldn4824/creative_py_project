@@ -78,7 +78,7 @@ export default function LifePage() {
   if (!rows.length) return <p style={{ padding: 24 }}>생활 데이터 불러오는 중…</p>;
 
   return (
-    <div className="life-page">
+    <div className="life-page life-page-main">
       {/* 생활 점수 랭킹 */}
       <section className="life-section">
         <h2>생활 점수 랭킹</h2>
@@ -135,126 +135,122 @@ export default function LifePage() {
         </div>
       </section>
 
-      {/* 병원 Treemap */}
-      <section className="life-section">
-        <h2>구별 병의원 수</h2>
-        <div className="chart-container">
-          <ResponsiveContainer>
-            <Treemap
-              data={byHospital.map((r) => ({
-                name: r.자치구,
-                size: r["병의원수"],
-              }))}
-              dataKey="size"
-              isAnimationActive={false}
-              content={
-                <CustomTreemapContent
-                  selectedGu={selectedGu}
-                  onSelect={setSelectedGu}
-                />
-              }
-            >
-              {byHospital.map((_, i) => (
-                <Cell key={i} fill={greenScale(i / byHospital.length)} />
-              ))}
-            </Treemap>
-          </ResponsiveContainer>
-        </div>
-      </section>
-
-     
-
-      {/* 평균 소음 Heatmap */}
-      <section className="life-section">
-        <h2>구별 소음 점수 Heatmap</h2>
-
-        <table className="heatmap-table">
-          <thead>
-            <tr>
-              <th>자치구</th>
-              <th>평균소음(dB)</th>
-              <th>점수</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((r) => {
-              const score = r["평균소음(dB)_점수"];
-              const t = 1 - score;
-              const bg = greenScale(t);
-
-              return (
-                <tr key={r.자치구}>
-                  <td>{r.자치구}</td>
-                  <td>{r["평균소음(dB)"].toFixed(2)}</td>
-                  <td
-                    className="heatmap-cell"
-                    style={{
-                      background: bg,
-                      color: t > 0.7 ? "#fff" : "#111",
-                      textAlign: "right",
-                    }}
-                  >
-                    {score.toFixed(3)}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </section>
-      {/* ---------------------------
-            점포 수 Horizontal Bar Chart
-        ---------------------------- */}
-        <section className="life-section">
-        <h2>구별 점포 수 (수평 막대 그래프)</h2>
-        <p>점포 수가 많을수록 막대가 길게 표시됩니다.</p>
-
-        <div className="chart-container" style={{ height: 420 }}>
+      {/* 그리드 레이아웃 */}
+      <div className="visualization-grid">
+        {/* 병원 Treemap */}
+        <div className="grid-item">
+          <h2>구별 병의원 수</h2>
+          <div className="chart-container" style={{ height: 380 }}>
             <ResponsiveContainer>
-            <BarChart
+              <Treemap
+                data={byHospital.map((r) => ({
+                  name: r.자치구,
+                  size: r["병의원수"],
+                }))}
+                dataKey="size"
+                isAnimationActive={false}
+                content={
+                  <CustomTreemapContent
+                    selectedGu={selectedGu}
+                    onSelect={setSelectedGu}
+                  />
+                }
+              >
+                {byHospital.map((_, i) => (
+                  <Cell key={i} fill={greenScale(i / byHospital.length)} />
+                ))}
+              </Treemap>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* 점포 수 Horizontal Bar Chart */}
+        <div className="grid-item">
+          <h2>구별 점포 수</h2>
+          <div className="chart-container" style={{ height: 380 }}>
+            <ResponsiveContainer>
+              <BarChart
                 data={byPark.map((r) => ({
-                gu: r.자치구,
-                shops: r["점포수"],
+                  gu: r.자치구,
+                  shops: r["점포수"],
                 }))}
                 layout="vertical"
                 margin={{ left: 80, right: 20 }}
-            >
+              >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis type="number" />
                 <YAxis type="category" dataKey="gu" width={80} />
                 <Tooltip />
                 <Bar dataKey="shops" fill="#34d399" />
-            </BarChart>
+              </BarChart>
             </ResponsiveContainer>
+          </div>
         </div>
-        </section>
 
-
-        {/* ---------------------------
-            🔥 ② 평균 소음 BarChart 추가
-        ---------------------------- */}
-        <section className="life-section">
-            <h2>평균 소음(dB) 순위</h2>
-            <div className="chart-container" style={{ height: 380 }}>
+        {/* 평균 소음 BarChart */}
+        <div className="grid-item">
+          <h2>평균 소음(dB) 순위</h2>
+          <div className="chart-container" style={{ height: 380 }}>
             <ResponsiveContainer>
-                <BarChart
+              <BarChart
                 data={byNoise.map((r) => ({
-                    gu: r.자치구,
-                    noise: r["평균소음(dB)"],
+                  gu: r.자치구,
+                  noise: r["평균소음(dB)"],
                 }))}
                 layout="vertical"
                 margin={{ left: 80, right: 20 }}
-                >
+              >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis type="number" />
                 <YAxis type="category" dataKey="gu" width={80} />
                 <Tooltip />
                 <Bar dataKey="noise" fill="#60a5fa" />
-                </BarChart>
+              </BarChart>
             </ResponsiveContainer>
-            </div>
-        </section>
+          </div>
         </div>
+
+        {/* 평균 소음 Heatmap */}
+        <div className="grid-item" style={{ gridColumn: "1 / -1" }}>
+          <h2>구별 소음 점수 Heatmap</h2>
+          <div style={{ maxHeight: 400, overflowY: "auto" }}>
+            <table className="heatmap-table">
+              <thead>
+                <tr>
+                  <th>자치구</th>
+                  <th>평균소음(dB)</th>
+                  <th>점수</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((r) => {
+                  const score = r["평균소음(dB)_점수"];
+                  const t = 1 - score;
+                  const bg = greenScale(t);
+
+                  return (
+                    <tr key={r.자치구}>
+                      <td>{r.자치구}</td>
+                      <td>{r["평균소음(dB)"].toFixed(2)}</td>
+                      <td
+                        className="heatmap-cell"
+                        style={{
+                          background: bg,
+                          color: t > 0.7 ? "#fff" : "#111",
+                          textAlign: "right",
+                        }}
+                      >
+                        {score.toFixed(3)}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 

@@ -3,9 +3,10 @@
 ------------------------------ */
 .life-page {
   padding: 32px 48px;
-  background: #f5f6f7;
+  background: #fafafa;
   color: #111827;
   min-width: 0;
+  min-height: 100vh;
 }
 
 /* 각 시각화 섹션 간격 */
@@ -15,15 +16,267 @@
 
 /* 타이틀 스타일 */
 .life-section h2 {
-  font-size: 22px;
-  font-weight: 700;
-  margin-bottom: 8px;
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 16px;
+  color: #1e293b;
+  position: relative;
+  padding-left: 16px;
+  letter-spacing: -0.5px;
+}
+
+.life-section h2::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5px;
+  height: 28px;
+  background: #fbbf24;
+  border-radius: 3px;
+}
+
+/* 주거 페이지 (핑크) */
+.housing-page .life-section h2::before {
+  background: #fbcfe8;
+}
+
+.housing-page .grid-item::before {
+  background: #fbcfe8;
+}
+
+.housing-page .grid-item h2::before {
+  background: #fbcfe8;
+}
+
+.housing-page .life-table th {
+  background: #fbcfe8;
+  color: #831843;
+}
+
+.housing-page .life-table tr:hover {
+  background: #fce7f3;
+}
+
+.housing-page .active-row {
+  background: #fce7f3 !important;
+  border-left: 4px solid #fbcfe8;
+}
+
+.housing-page .summary-card {
+  border: 2px solid #fbcfe8;
+}
+
+.housing-page .summary-card::before {
+  background: #fbcfe8;
+}
+
+.housing-page .summary-card ul li:hover {
+  color: #be185d;
+}
+
+.housing-page .heatmap-table th {
+  background: #fbcfe8;
+  color: #831843;
+}
+
+/* 생활 페이지 (초록) */
+.life-page-main .life-section h2::before {
+  background: #86efac;
+}
+
+.life-page-main .grid-item::before {
+  background: #86efac;
+}
+
+.life-page-main .grid-item h2::before {
+  background: #86efac;
+}
+
+.life-page-main .life-table th {
+  background: #86efac;
+  color: #14532d;
+}
+
+.life-page-main .life-table tr:hover {
+  background: #d1fae5;
+}
+
+.life-page-main .active-row {
+  background: #d1fae5 !important;
+  border-left: 4px solid #86efac;
+}
+
+.life-page-main .summary-card {
+  border: 2px solid #86efac;
+}
+
+.life-page-main .summary-card::before {
+  background: #86efac;
+}
+
+.life-page-main .summary-card ul li:hover {
+  color: #166534;
+}
+
+.life-page-main .heatmap-table th {
+  background: #86efac;
+  color: #14532d;
+}
+
+/* 치안 페이지 (파랑) */
+.crime-page .life-section h2::before {
+  background: #93c5fd;
+}
+
+.crime-page .grid-item::before {
+  background: #93c5fd;
+}
+
+.crime-page .grid-item h2::before {
+  background: #93c5fd;
+}
+
+.crime-page .life-table th {
+  background: #93c5fd;
+  color: #1e3a8a;
+}
+
+.crime-page .life-table tr:hover {
+  background: #dbeafe;
+}
+
+.crime-page .active-row {
+  background: #dbeafe !important;
+  border-left: 4px solid #93c5fd;
+}
+
+.crime-page .summary-card {
+  border: 2px solid #93c5fd;
+}
+
+.crime-page .summary-card::before {
+  background: #93c5fd;
+}
+
+.crime-page .summary-card ul li:hover {
+  color: #1e40af;
+}
+
+.crime-page .heatmap-table th {
+  background: #93c5fd;
+  color: #1e3a8a;
+}
+
+/* 교통 페이지 (노랑) */
+.transport-page .life-section h2::before {
+  background: #fde68a;
+}
+
+.transport-page .grid-item::before {
+  background: #fde68a;
+}
+
+.transport-page .grid-item h2::before {
+  background: #fde68a;
+}
+
+.transport-page .life-table th {
+  background: #fde68a;
+  color: #78350f;
+}
+
+.transport-page .life-table tr:hover {
+  background: #fef3c7;
+}
+
+.transport-page .active-row {
+  background: #fef3c7 !important;
+  border-left: 4px solid #fde68a;
+}
+
+.transport-page .summary-card {
+  border: 2px solid #fde68a;
+}
+
+.transport-page .summary-card::before {
+  background: #fde68a;
+}
+
+.transport-page .summary-card ul li:hover {
+  color: #92400e;
+}
+
+.transport-page .heatmap-table th {
+  background: #fde68a;
+  color: #78350f;
 }
 
 .life-section p {
   font-size: 13px;
-  color: #6b7280;
+  color: #64748b;
   margin-bottom: 16px;
+}
+
+/* 그리드 레이아웃 컨테이너 */
+.visualization-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+
+/* 그리드 아이템 (각 시각화 섹션) */
+.grid-item {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.grid-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #fbbf24;
+}
+
+.grid-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+  border-color: #d1d5db;
+}
+
+.grid-item h2 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 18px 0;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.grid-item h2::before {
+  content: '';
+  width: 6px;
+  height: 20px;
+  background: #fbbf24;
+  border-radius: 3px;
+}
+
+.grid-item p {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0 0 16px 0;
 }
 
 
@@ -34,26 +287,42 @@
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .life-table th {
-  background: #f9fafb;
-  padding: 8px;
+  background: #fbbf24;
+  color: #ffffff;
+  padding: 14px 12px;
   text-align: left;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .life-table td {
-  padding: 8px;
+  padding: 12px;
   border-bottom: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
 }
 
 .life-table tr:hover {
-  background: #f1f5f9;
+  background: #fef3c7;
+  transform: scale(1.01);
+}
+
+.life-table tr:last-child td {
+  border-bottom: none;
 }
 
 .active-row {
-  background: #eff6ff !important;
+  background: #fef3c7 !important;
+  border-left: 4px solid #fbbf24;
+  font-weight: 600;
 }
 
 
@@ -62,25 +331,63 @@
 ------------------------------ */
 .summary-card {
   width: 260px;
-  padding: 18px;
+  padding: 20px;
   border-radius: 16px;
   background: #ffffff;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  border: 2px solid #fbbf24;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.summary-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: #fbbf24;
 }
 
 .summary-card h3 {
-  margin: 0 0 12px;
+  margin: 0 0 16px;
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 800;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.summary-card h3::before {
+  content: '📍';
+  font-size: 20px;
 }
 
 .summary-card ul {
   list-style: none;
   padding: 0;
   margin: 0;
-  line-height: 1.7;
+  line-height: 1.8;
   font-size: 14px;
+}
+
+.summary-card ul li {
+  padding: 6px 0;
+  border-bottom: 1px solid #f1f5f9;
+  color: #475569;
+  transition: all 0.2s ease;
+}
+
+.summary-card ul li:last-child {
+  border-bottom: none;
+}
+
+.summary-card ul li:hover {
+  color: #f59e0b;
+  padding-left: 8px;
+  font-weight: 600;
 }
 
 
@@ -91,12 +398,28 @@
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
-.heatmap-table th,
+.heatmap-table th {
+  background: #fbbf24;
+  color: #ffffff;
+  padding: 14px 12px;
+  font-weight: 700;
+  text-align: left;
+}
+
 .heatmap-table td {
-  padding: 10px;
+  padding: 12px;
   border-bottom: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+}
+
+.heatmap-table tr:hover td {
+  background: #f8fafc;
 }
 
 /* Heatmap 컬러 등장 효과 */
@@ -122,6 +445,17 @@
   width: 100%;
   min-height: 300px;
   min-width: 280px;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+}
+
+.chart-container:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #d1d5db;
 }
 
 /* Treemap hover 효과 */

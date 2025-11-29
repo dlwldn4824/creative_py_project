@@ -1,0 +1,147 @@
+/* 헤더 */
+.app-header {
+  display: flex;
+  align-items: center;
+  padding: 20px 40px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  gap: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  color: white;
+}
+
+.logo {
+  width: 120px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 20px;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header-text h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-text p {
+  margin: 6px 0 0;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.slider-input {
+  flex: 1;
+  height: 8px;
+  border-radius: 4px;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.slider-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border: 2px solid currentColor;
+}
+
+.slider-input::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border: 2px solid currentColor;
+}
+
+.bubble-card {
+  background: #dedee2;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  min-height: 90px;
+}
+
+.bubble-item {
+  flex: 1;
+  border: none;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.bubble-item:hover {
+  transform: translateY(-2px);
+}
+
+.bubble-item--active .bubble-circle {
+  border-style: solid;
+  border-width: 3px;
+  transform: scale(1.1);
+}
+
+.bubble-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
+  border: 3px solid transparent;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+/* 카테고리별 색상 */
+.bubble-item:nth-child(1) .bubble-circle {
+  background: linear-gradient(135deg, #3b82f6, #2563eb); /* 주거 - 파란색 */
+}
+
+.bubble-item:nth-child(2) .bubble-circle {
+  background: linear-gradient(135deg, #10b981, #059669); /* 생활 - 초록색 */
+}
+
+.bubble-item:nth-child(3) .bubble-circle {
+  background: linear-gradient(135deg, #ef4444, #dc2626); /* 치안 - 빨간색 */
+}
+
+.bubble-item:nth-child(4) .bubble-circle {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed); /* 교통 - 보라색 */
+}
+
+.bubble-item:hover .bubble-circle {
+  transform: scale(1.1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.bubble-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+  text-align: center;
+}

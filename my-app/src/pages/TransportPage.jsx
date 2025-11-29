@@ -82,7 +82,7 @@ export default function TransportPage() {
   if (!rows.length) return <p style={{ padding: 24 }}>교통 데이터 불러오는 중…</p>;
 
   return (
-    <div className="life-page" style={{ paddingBottom: 80 }}>
+    <div className="life-page transport-page" style={{ paddingBottom: 80 }}>
       {/* 1. 교통 점수 랭킹 */}
       <section className="life-section">
         <h2>교통 점수 랭킹 (TOP 20)</h2>
@@ -139,51 +139,54 @@ export default function TransportPage() {
         </div>
       </section>
 
-      {/* 2. 버스 정류장 TOP20 */}
-      <section className="life-section">
-        <h2>근처 버스정류장 수 TOP 20</h2>
-        <div className="chart-container" style={{ height: 420 }}>
-          <ResponsiveContainer>
-            <BarChart
-              data={topBus.map((r) => ({
-                dong: r.법정동,
-                bus: r["근처버스정류장수"],
-              }))}
-              layout="vertical"
-              margin={{ left: 80, right: 20 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis type="number" />
-              <YAxis dataKey="dong" type="category" width={80} />
-              <Tooltip />
-              <Bar dataKey="bus" fill="#69d3a7" />
-            </BarChart>
-          </ResponsiveContainer>
+      {/* 그리드 레이아웃 */}
+      <div className="visualization-grid">
+        {/* 2. 버스 정류장 TOP20 */}
+        <div className="grid-item">
+          <h2>근처 버스정류장 수 TOP 20</h2>
+          <div className="chart-container" style={{ height: 380 }}>
+            <ResponsiveContainer>
+              <BarChart
+                data={topBus.map((r) => ({
+                  dong: r.법정동,
+                  bus: r["근처버스정류장수"],
+                }))}
+                layout="vertical"
+                margin={{ left: 80, right: 20 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis type="number" />
+                <YAxis dataKey="dong" type="category" width={80} />
+                <Tooltip />
+                <Bar dataKey="bus" fill="#69d3a7" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
-      </section>
 
-      {/* 3. 지하철 접근성 TOP 20 (거리_km 낮을수록 상위) */}
-      <section className="life-section">
-        <h2>지하철 접근성 (가까운 순 TOP 20)</h2>
-        <div className="chart-container" style={{ height: 420 }}>
-          <ResponsiveContainer>
-            <BarChart
-              data={topSubwayNear.map((r) => ({
-                dong: r.법정동,
-                dist: r["거리_km"],
-              }))}
-              layout="vertical"
-              margin={{ left: 80, right: 20 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis type="number" />
-              <YAxis dataKey="dong" type="category" width={80} />
-              <Tooltip />
-              <Bar dataKey="dist" fill="#60a5fa" />
-            </BarChart>
-          </ResponsiveContainer>
+        {/* 3. 지하철 접근성 TOP 20 */}
+        <div className="grid-item">
+          <h2>지하철 접근성 (가까운 순 TOP 20)</h2>
+          <div className="chart-container" style={{ height: 380 }}>
+            <ResponsiveContainer>
+              <BarChart
+                data={topSubwayNear.map((r) => ({
+                  dong: r.법정동,
+                  dist: r["거리_km"],
+                }))}
+                layout="vertical"
+                margin={{ left: 80, right: 20 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis type="number" />
+                <YAxis dataKey="dong" type="category" width={80} />
+                <Tooltip />
+                <Bar dataKey="dist" fill="#60a5fa" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
-      </section>
+      </div>
 
     </div>
   );

@@ -149,13 +149,87 @@ export default function Home() {
 
   const handleResetWeights = () => setWeights(DEFAULT_WEIGHTS);
 
+  // 저장하기 함수
+  const handleSave = () => {
+    if (!top10.length) {
+      alert("저장할 지역이 없습니다.");
+      return;
+    }
+
+    // 저장할 데이터 구조
+    const saveData = {
+      timestamp: new Date().toISOString(),
+      selectedGu: selectedGu,
+      weights: weights,
+      top10: top10.map((r, idx) => ({
+        rank: idx + 1,
+        name: r.name,
+        gu: r.gu,
+        housing: r.housing,
+        life: r.life,
+        safety: r.safety,
+        transport: r.transport,
+        score: r.score,
+        lat: r.lat,
+        lng: r.lng,
+        nearestStation: r.nearestStation,
+        distanceKm: r.distanceKm,
+        avgRent: r.avgRent,
+      })),
+    };
+
+    // localStorage에 저장 (기존 저장 목록 가져오기)
+    const existingSaves = JSON.parse(localStorage.getItem("savedRegions") || "[]");
+    existingSaves.push(saveData);
+    
+    // 최대 10개까지만 저장 (오래된 것부터 삭제)
+    if (existingSaves.length > 10) {
+      existingSaves.shift();
+    }
+    
+    localStorage.setItem("savedRegions", JSON.stringify(existingSaves));
+    
+    alert(`추천 지역 TOP 10이 저장되었습니다.\n저장된 항목: ${existingSaves.length}개`);
+  };
+
   return (
     <div className="app-root">
       <header className="app-header">
-        <div className="logo">다이어터</div>
-        <div className="header-text">
-          <h1>나에게 맞는 주거 지역은?</h1>
-          <p>높아지는 서울 주거비, 자신에게 최적화된 지역에 거주하기 위한 웹/앱</p>
+        <div style={{ display: "flex", alignItems: "center", gap: "20px", flex: 1 }}>
+          <div className="logo">다이어터</div>
+          <div className="header-text">
+            <h1>나에게 맞는 주거 지역은?</h1>
+            <p>서울에서 나에게 딱 맞는 동네를 찾는 주거 매칭 서비스</p>
+            <p style={{ marginTop: "4px", fontSize: "12px", opacity: 0.85 }}>
+              주거 · 생활 · 치안 · 교통 점수를 조절해 내 기준에 맞는 동네를 발견해 보세요.
+            </p>
+          </div>
+        </div>
+        <div className="category-chips">
+          <button
+            className="chip chip-home"
+            onClick={() => navigate("/housing")}
+          >
+            주거
+          </button>
+          <button
+            className="chip chip-life"
+            onClick={() => navigate("/life")}
+          >
+            생활
+          </button>
+          <button
+            className="chip chip-safe"
+            onClick={() => navigate("/safety")}
+          >
+            치안
+          </button>
+          <button
+            className="chip chip-traffic"
+            onClick={() => navigate("/transport")}
+          >
+            교통
+          </button>
         </div>
       </header>
 
@@ -180,27 +254,59 @@ export default function Home() {
             </select>
           </div>
 
+          <div className="info-card">
+            <h3 className="info-card-title">가중치 설정</h3>
+            <p className="info-card-desc">
+              각 항목의 중요도를 조절하여 나에게 맞는 지역을 찾아보세요.
+              슬라이더를 움직여 가중치를 변경할 수 있습니다.
+            </p>
+          </div>
+
           <div className="slider-group">
-            <SliderRow
-              label="주거"
-              value={weights.housing}
-              onChange={(v) => handleWeightChange("housing", v)}
-            />
-            <SliderRow
-              label="생활"
-              value={weights.life}
-              onChange={(v) => handleWeightChange("life", v)}
-            />
-            <SliderRow
-              label="치안"
-              value={weights.safety}
-              onChange={(v) => handleWeightChange("safety", v)}
-            />
-            <SliderRow
-              label="교통"
-              value={weights.transport}
-              onChange={(v) => handleWeightChange("transport", v)}
-            />
+            <div className="slider-item-wrapper">
+              <div className="slider-info">
+                <span className="slider-info-label">주거</span>
+                <span className="slider-info-desc">주거 환경, 월세, 건축년도 등</span>
+              </div>
+              <SliderRow
+                label="주거"
+                value={weights.housing}
+                onChange={(v) => handleWeightChange("housing", v)}
+              />
+            </div>
+            <div className="slider-item-wrapper">
+              <div className="slider-info">
+                <span className="slider-info-label">생활</span>
+                <span className="slider-info-desc">병원, 점포, 공원, 소음 등</span>
+              </div>
+              <SliderRow
+                label="생활"
+                value={weights.life}
+                onChange={(v) => handleWeightChange("life", v)}
+              />
+            </div>
+            <div className="slider-item-wrapper">
+              <div className="slider-info">
+                <span className="slider-info-label">치안</span>
+                <span className="slider-info-desc">범죄율, CCTV, 가로등 등</span>
+              </div>
+              <SliderRow
+                label="치안"
+                value={weights.safety}
+                onChange={(v) => handleWeightChange("safety", v)}
+              />
+            </div>
+            <div className="slider-item-wrapper">
+              <div className="slider-info">
+                <span className="slider-info-label">교통</span>
+                <span className="slider-info-desc">지하철 접근성, 버스정류장 등</span>
+              </div>
+              <SliderRow
+                label="교통"
+                value={weights.transport}
+                onChange={(v) => handleWeightChange("transport", v)}
+              />
+            </div>
           </div>
 
           <div className="slider-footer">
@@ -211,6 +317,12 @@ export default function Home() {
           </div>
 
           {/* ✅ 카테고리별 상세 페이지 버튼 4개 */}
+          <div className="info-card">
+            <h3 className="info-card-title">상세 정보 보기</h3>
+            <p className="info-card-desc">
+              각 카테고리별 상세 데이터와 시각화를 확인할 수 있습니다.
+            </p>
+          </div>
           <div className="bubble-card">
             <button
               className="bubble-item bubble-item--category"
@@ -286,23 +398,24 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 오른쪽 패널 */}
-        <section className="right-panel">
-          {/* 지도 */}
+        {/* 가운데: 지도 */}
+        <section className="middle-panel">
           <div className="map-wrapper">
             <div className="map-header">지도</div>
             <div className="map-placeholder">
-              <MapView regions={top10} />
+              <MapView regions={top10} selectedRegion={selectedRegion} />
             </div>
           </div>
+        </section>
 
-          {/* 하단 결과 + 상세/저장 */}
-          <div className="result-bottom">
-            <div
-              className="result-list"
-              key={selectedGu + JSON.stringify(weights)}
-            >
-              <h2>추천 지역 TOP 10</h2>
+        {/* 오른쪽 패널 */}
+        <section className="right-panel">
+          <div
+            className="result-list"
+            key={selectedGu + JSON.stringify(weights)}
+          >
+            <h2>추천 지역 TOP 10</h2>
+            <div className="rank-list">
               {top10.map((r, idx) => (
                 <div
                   key={r.id}
@@ -327,24 +440,17 @@ export default function Home() {
               ))}
               {!top10.length && <p>추천 결과가 없습니다.</p>}
             </div>
+          </div>
 
-            <div className="side-actions">
-              <button
-                className="btn-primary"
-                onClick={() => {
-                  const target = selectedRegion || top10[0];
-                  if (target) {
-                    alert(`${target.name}을(를) 임시로 저장했습니다.`);
-                  } else {
-                    alert("저장할 지역이 없습니다.");
-                  }
-                }}
-              >
-                저장하기
-              </button>
+          <div className="side-actions">
+            <button
+              className="btn-primary"
+              onClick={handleSave}
+            >
+              저장하기
+            </button>
 
-                <DetailPanel region={selectedRegion} weights={weights} />
-            </div>
+            <DetailPanel region={selectedRegion} weights={weights} />
           </div>
         </section>
       </main>

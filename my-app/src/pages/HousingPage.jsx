@@ -87,11 +87,41 @@ export default function HousingPage() {
     [rows]
   );
 
+  // 안정성 점수의 실제 범위 계산 (차이를 더 잘 보이게 하기 위해)
+  const safetyScoreRange = useMemo(() => {
+    if (top20Safety.length === 0) return { min: 0.5, max: 1 };
+    const scores = top20Safety.map((r) => r["안정성점수"]);
+    const min = Math.min(...scores);
+    const max = Math.max(...scores);
+    // 여유 공간을 주되, 최소값은 0.5 이상, 최대값은 1 이하로 유지
+    const padding = (max - min) * 0.1; // 10% 여유 공간
+    return {
+      min: Math.max(0.5, min - padding),
+      max: Math.min(1, max + padding),
+    };
+  }, [top20Safety]);
+
+  // 색상 그라데이션 함수 (점수에 따라 색상 변경)
+  const getSafetyColor = (score) => {
+    if (!safetyScoreRange || top20Safety.length === 0) return "#f87171";
+    const { min, max } = safetyScoreRange;
+    const normalized = (score - min) / (max - min); // 0~1로 정규화
+    
+    // 낮은 점수: 연한 빨강, 높은 점수: 진한 빨강/주황
+    if (normalized < 0.33) {
+      return "#fca5a5"; // 연한 빨강
+    } else if (normalized < 0.66) {
+      return "#f87171"; // 중간 빨강
+    } else {
+      return "#ef4444"; // 진한 빨강
+    }
+  };
+
   if (!rows.length)
     return <p style={{ padding: 20 }}>주거 데이터 불러오는 중…</p>;
 
   return (
-    <div className="life-page">
+    <div className="life-page housing-page">
       {/* ---------------------------
           1. 주거 점수 랭킹 (TOP 20)
       ---------------------------- */}
@@ -153,80 +183,94 @@ export default function HousingPage() {
         </div>
       </section>
 
-      {/* ---------------------------
-          2. 전월세 평균 (TOP 20)
-      ---------------------------- */}
-      <section className="life-section">
-        <h2>전월세 평균 (만원) — TOP 20</h2>
-
-        <div className="chart-container" style={{ height: 420 }}>
-          <ResponsiveContainer>
-            <BarChart
-              data={top20Rent.map((r) => ({
-                dong: r.법정동,
-                rent: r["전월세평균"],
-              }))}
-              layout="vertical"
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis type="number" />
-              <YAxis dataKey="dong" type="category" width={100} />
-              <Tooltip />
-              <Bar dataKey="rent" fill="#34d399" />
-            </BarChart>
-          </ResponsiveContainer>
+      {/* 그리드 레이아웃 */}
+      <div className="visualization-grid">
+        {/* ---------------------------
+            2. 전월세 평균 (TOP 20)
+        ---------------------------- */}
+        <div className="grid-item">
+          <h2>전월세 평균 (만원) — TOP 20</h2>
+          <div className="chart-container" style={{ height: 380 }}>
+            <ResponsiveContainer>
+              <BarChart
+                data={top20Rent.map((r) => ({
+                  dong: r.법정동,
+                  rent: r["전월세평균"],
+                }))}
+                layout="vertical"
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis type="number" />
+                <YAxis dataKey="dong" type="category" width={100} />
+                <Tooltip />
+                <Bar dataKey="rent" fill="#34d399" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
-      </section>
 
-      {/* ---------------------------
-          3. 건축년도 (TOP 20)
-      ---------------------------- */}
-      <section className="life-section">
-        <h2>건축년도 순위 — TOP 20</h2>
-
-        <div className="chart-container" style={{ height: 420 }}>
-          <ResponsiveContainer>
-            <BarChart
-              data={top20Year.map((r) => ({
-                dong: r.법정동,
-                year: r["건축년도"],
-              }))}
-              layout="vertical"
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis type="number" domain={[1990, 2025]} />
-              <YAxis dataKey="dong" type="category" width={100} />
-              <Tooltip />
-              <Bar dataKey="year" fill="#60a5fa" />
-            </BarChart>
-          </ResponsiveContainer>
+        {/* ---------------------------
+            3. 건축년도 (TOP 20)
+        ---------------------------- */}
+        <div className="grid-item">
+          <h2>건축년도 순위 — TOP 20</h2>
+          <div className="chart-container" style={{ height: 380 }}>
+            <ResponsiveContainer>
+              <BarChart
+                data={top20Year.map((r) => ({
+                  dong: r.법정동,
+                  year: r["건축년도"],
+                }))}
+                layout="vertical"
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis type="number" domain={[1990, 2025]} />
+                <YAxis dataKey="dong" type="category" width={100} />
+                <Tooltip />
+                <Bar dataKey="year" fill="#60a5fa" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
-      </section>
 
-      {/* ---------------------------
-          4. 안정성 점수 (TOP 20)
-      ---------------------------- */}
-      <section className="life-section">
-        <h2>안정성 점수 (0.5~1) — TOP 20</h2>
-
-        <div className="chart-container" style={{ height: 420 }}>
-          <ResponsiveContainer>
-            <BarChart
-              data={top20Safety.map((r) => ({
-                dong: r.법정동,
-                score: r["안정성점수"],
-              }))}
-              layout="vertical"
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis type="number" domain={[0.5, 1]} />
-              <YAxis dataKey="dong" type="category" width={100} />
-              <Tooltip />
-              <Bar dataKey="score" fill="#f87171" />
-            </BarChart>
-          </ResponsiveContainer>
+        {/* ---------------------------
+            4. 안정성 점수 (TOP 20)
+        ---------------------------- */}
+        <div className="grid-item" style={{ gridColumn: "1 / -1" }}>
+          <h2>안정성 점수 (0.5~1) — TOP 20</h2>
+          <p style={{ fontSize: "13px", color: "#6b7280", marginBottom: "16px" }}>
+            실제 범위: {safetyScoreRange.min.toFixed(3)} ~ {safetyScoreRange.max.toFixed(3)}
+          </p>
+          <div className="chart-container" style={{ height: 420 }}>
+            <ResponsiveContainer>
+              <BarChart
+                data={top20Safety.map((r) => ({
+                  dong: r.법정동,
+                  score: r["안정성점수"],
+                }))}
+                layout="vertical"
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis 
+                  type="number" 
+                  domain={[safetyScoreRange.min, safetyScoreRange.max]}
+                  tickFormatter={(value) => value.toFixed(3)}
+                />
+                <YAxis dataKey="dong" type="category" width={100} />
+                <Tooltip 
+                  formatter={(value) => [`${value.toFixed(3)}`, "안정성 점수"]}
+                  labelFormatter={(label) => `법정동: ${label}`}
+                />
+                <Bar dataKey="score">
+                  {top20Safety.map((r, index) => (
+                    <Cell key={`cell-${index}`} fill={getSafetyColor(r["안정성점수"])} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }

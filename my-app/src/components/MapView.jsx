@@ -4,7 +4,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./MapView.css";
 
-export default function MapView({ regions, onSelectRegion }) {
+export default function MapView({ regions, onSelectRegion, selectedRegion }) {
   const mapContainerRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const markersLayerRef = useRef(null);
@@ -60,12 +60,26 @@ export default function MapView({ regions, onSelectRegion }) {
       const lat = r.lat;
       const lng = r.lng;
       const isTop3 = idx < 3;
+      const isSelected = selectedRegion && selectedRegion.id === r.id;
+
+      // 선택된 지역은 노란색, TOP 3는 빨간색, 나머지는 파란색
+      let color, fillColor;
+      if (isSelected) {
+        color = "#fbbf24";
+        fillColor = "#fcd34d";
+      } else if (isTop3) {
+        color = "#ff4d4f";
+        fillColor = "#ff7875";
+      } else {
+        color = "#4f7cff";
+        fillColor = "#7c9cff";
+      }
 
       const marker = L.circleMarker([lat, lng], {
-        radius: isTop3 ? 9 : 7,
-        weight: 2,
-        color: isTop3 ? "#ff4d4f" : "#4f7cff",
-        fillColor: isTop3 ? "#ff7875" : "#7c9cff",
+        radius: isSelected ? 12 : isTop3 ? 9 : 7,
+        weight: isSelected ? 3 : 2,
+        color: color,
+        fillColor: fillColor,
         fillOpacity: 0.9,
       });
 
@@ -87,10 +101,20 @@ export default function MapView({ regions, onSelectRegion }) {
       bounds.push([lat, lng]);
     });
 
-    if (bounds.length) {
+    // 선택된 지역이 있으면 해당 지역으로 확대, 없으면 전체 보기
+    if (selectedRegion && selectedRegion.lat && selectedRegion.lng) {
+      const selectedLat = selectedRegion.lat;
+      const selectedLng = selectedRegion.lng;
+      if (Number.isFinite(selectedLat) && Number.isFinite(selectedLng)) {
+        map.setView([selectedLat, selectedLng], 14, {
+          animate: true,
+          duration: 0.5,
+        });
+      }
+    } else if (bounds.length) {
       map.fitBounds(bounds, { padding: [40, 40] });
     }
-  }, [visibleRegions, onSelectRegion]);
+  }, [visibleRegions, onSelectRegion, selectedRegion]);
 
   return (
     <div className="map-container">

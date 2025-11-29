@@ -168,7 +168,7 @@ export default function CrimePage() {
     return <p style={{ padding: 24 }}>치안 데이터 불러오는 중…</p>;
 
   return (
-    <div className="life-page">
+    <div className="life-page crime-page">
 
       {/* ----------------------------- */}
       {/* 1. 치안점수 랭킹 */}
@@ -241,105 +241,96 @@ export default function CrimePage() {
         </div>
       </section>
 
-      {/* ----------------------------- */}
-      {/* 2. 살인 랭킹 (도넛) */}
-      {/* ----------------------------- */}
-      <section className="life-section">
-        <h2>살인 발생 수 (도넛 차트)</h2>
+      {/* 그리드 레이아웃 */}
+      <div className="visualization-grid">
+        {/* 2. 살인 랭킹 (도넛) */}
+        <div className="grid-item">
+          <h2>살인 발생 수 (도넛 차트)</h2>
+          <div className="chart-container" style={{ height: 380 }}>
+            <ResponsiveContainer>
+              <PieChart>
+                <Pie
+                  data={murderRank}
+                  dataKey="살인"
+                  nameKey="자치구"
+                  innerRadius={80}
+                  outerRadius={130}
+                  paddingAngle={2}
+                >
+                  {murderRank.map((_, i) => (
+                    <Cell key={i} fill={colors[i % colors.length]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
 
-        <div className="chart-container" style={{ height: 420 }}>
-          <ResponsiveContainer>
-            <PieChart>
-              <Pie
-                data={murderRank}
-                dataKey="살인"
-                nameKey="자치구"
-                innerRadius={80}
-                outerRadius={130}
-                paddingAngle={2}
+        {/* 3. 절도 랭킹 (Treemap) */}
+        <div className="grid-item">
+          <h2>절도 범죄 수 (Treemap 시각화)</h2>
+          <div className="chart-container" style={{ height: 380 }}>
+            <ResponsiveContainer>
+              <Treemap
+                data={theftRank.map((r) => ({
+                  name: r.자치구,
+                  size: r["절도"],
+                }))}
+                dataKey="size"
+                stroke="#fff"
+                isAnimationActive={false}
               >
-                {murderRank.map((_, i) => (
+                {theftRank.map((_, i) => (
                   <Cell key={i} fill={colors[i % colors.length]} />
                 ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </ResponsiveContainer>
+              </Treemap>
+            </ResponsiveContainer>
+          </div>
         </div>
-      </section>
 
-      {/* ----------------------------- */}
-      {/* 3. 절도 랭킹 (Treemap) */}
-      {/* ----------------------------- */}
-      <section className="life-section">
-        <h2>절도 범죄 수 (Treemap 시각화)</h2>
-
-        <div className="chart-container" style={{ height: 420 }}>
-          <ResponsiveContainer>
-            <Treemap
-              data={theftRank.map((r) => ({
-                name: r.자치구,
-                size: r["절도"],
-              }))}
-              dataKey="size"
-              stroke="#fff"
-              isAnimationActive={false}
-            >
-              {theftRank.map((_, i) => (
-                <Cell key={i} fill={colors[i % colors.length]} />
-              ))}
-            </Treemap>
-          </ResponsiveContainer>
+        {/* 4. CCTV 랭킹 (세로 BarChart) */}
+        <div className="grid-item">
+          <h2>CCTV 설치 수</h2>
+          <div className="chart-container" style={{ height: 380 }}>
+            <ResponsiveContainer>
+              <BarChart data={cctvRank}>
+                <XAxis dataKey="자치구" angle={-45} textAnchor="end" height={100} />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="CCTV">
+                  {cctvRank.map((_, i) => (
+                    <Cell key={i} fill={colors[i % colors.length]} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
-      </section>
 
-      {/* ----------------------------- */}
-      {/* 4. CCTV 랭킹 (세로 BarChart) */}
-      {/* ----------------------------- */}
-      <section className="life-section">
-        <h2>CCTV 설치 수 (세로 막대그래프)</h2>
-
-        <div className="chart-container" style={{ height: 450 }}>
-          <ResponsiveContainer>
-            <BarChart data={cctvRank}>
-              <XAxis dataKey="자치구" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="CCTV">
-                {cctvRank.map((_, i) => (
-                  <Cell key={i} fill={colors[i % colors.length]} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
+        {/* 5. 가로등 수 랭킹 (가로 Bar) */}
+        <div className="grid-item">
+          <h2>가로등 수 (수평 막대그래프)</h2>
+          <div className="chart-container" style={{ height: 380 }}>
+            <ResponsiveContainer>
+              <BarChart
+                data={lampRank}
+                layout="vertical"
+                margin={{ left: 80 }}
+              >
+                <XAxis type="number" />
+                <YAxis type="category" dataKey="자치구" width={80} />
+                <Tooltip />
+                <Bar dataKey="가로등수">
+                  {lampRank.map((_, i) => (
+                    <Cell key={i} fill={colors[i % colors.length]} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
-      </section>
-
-      {/* ----------------------------- */}
-      {/* 5. 가로등 수 랭킹 (가로 Bar) */}
-      {/* ----------------------------- */}
-      <section className="life-section">
-        <h2>가로등 수 (수평 막대그래프)</h2>
-
-        <div className="chart-container" style={{ height: 480 }}>
-          <ResponsiveContainer>
-            <BarChart
-              data={lampRank}
-              layout="vertical"
-              margin={{ left: 80 }}
-            >
-              <XAxis type="number" />
-              <YAxis type="category" dataKey="자치구" width={80} />
-              <Tooltip />
-              <Bar dataKey="가로등수">
-                {lampRank.map((_, i) => (
-                  <Cell key={i} fill={colors[i % colors.length]} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </section>
+      </div>
     </div>
   );
 }
