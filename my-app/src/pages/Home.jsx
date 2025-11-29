@@ -6,8 +6,7 @@ import DetailPanel from "../components/DetailPanel.jsx";
 import MapView from "../components/MapView.jsx";
 import TrendingRegions from "../components/TrendingRegions.jsx";
 
-// ✅ Vite: CSV를 문자열로 바로 import
-import csvText from "../data/최종_이사점수_병합완료.csv?raw";
+import csvText from "../data/final_data.csv?raw";
 
 const DEFAULT_WEIGHTS = {
   housing: 0.25,
@@ -34,8 +33,8 @@ function mapRowToRegion(row, index) {
     // 👉 앞으로 추가할 세부 컬럼 자리 (예: 평균 월세)
     avgRent: Number(row["평균월세"] || 0),
 
-    lat: Number(row["위도"] || row["lat"] || row["LAT"] || 0),
-    lng: Number(row["경도"] || row["lng"] || row["LNG"] || 0),
+    lat: Number(row["위도(법정동)"] || row["위도"] || row["lat"] || row["LAT"] || 0),
+    lng: Number(row["경도(법정동)"] || row["경도"] || row["lng"] || row["LNG"] || 0),
     nearestStation: row["가장가까운역"] || "",
     distanceKm: Number(row["거리_km"] || 0),
     avgNoise: Number(row["평균소음(dB)"] || 0),

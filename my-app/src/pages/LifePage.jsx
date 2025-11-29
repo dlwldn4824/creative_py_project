@@ -1,5 +1,6 @@
 // src/pages/LifePage.jsx
 import React, { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import csvText from "../data/life_score.csv?raw";
 
 import {
@@ -43,6 +44,7 @@ const greenScale = (t) => {
 };
 
 export default function LifePage() {
+  const navigate = useNavigate();
   const [rows, setRows] = useState([]);
   const [selectedGu, setSelectedGu] = useState(null);
 
@@ -78,7 +80,59 @@ export default function LifePage() {
   if (!rows.length) return <p style={{ padding: 24 }}>생활 데이터 불러오는 중…</p>;
 
   return (
-    <div className="life-page life-page-main">
+    <div className="app-root">
+      <header className="app-header" style={{ background: "linear-gradient(135deg, #86efac 0%, #4ade80 100%)", color: "#000" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "20px", flex: 1 }}>
+          <div className="logo" style={{ color: "#000" }}>다이어터</div>
+          <div className="header-text" style={{ color: "#000" }}>
+            <h1 style={{ color: "#000" }}>나에게 맞는 주거 지역은?</h1>
+            <p style={{ color: "#000" }}>서울에서 나에게 딱 맞는 동네를 찾는 주거 매칭 서비스</p>
+            <p style={{ marginTop: "4px", fontSize: "13px", opacity: 0.8, color: "#000" }}>
+              주거 · 생활 · 치안 · 교통 점수를 조절해 내 기준에 맞는 동네를 발견해 보세요.
+            </p>
+          </div>
+        </div>
+        <div className="category-chips">
+          <button
+            className="chip chip-home"
+            onClick={() => navigate("/housing")}
+            style={{ color: "#000" }}
+          >
+            주거
+          </button>
+          <button
+            className="chip chip-life"
+            onClick={() => navigate("/life")}
+            style={{ color: "#000" }}
+          >
+            생활
+          </button>
+          <button
+            className="chip chip-safe"
+            onClick={() => navigate("/safety")}
+            style={{ color: "#000" }}
+          >
+            치안
+          </button>
+          <button
+            className="chip chip-traffic"
+            onClick={() => navigate("/transport")}
+            style={{ color: "#000" }}
+          >
+            교통
+          </button>
+        </div>
+      </header>
+      <div className="life-page life-page-main">
+        <div style={{ marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <button
+            className="btn-primary"
+            onClick={() => navigate("/")}
+            style={{ fontSize: "15px", padding: "10px 18px", background: "#86efac", color: "#14532d" }}
+          >
+            ← 홈으로 돌아가기
+          </button>
+        </div>
       {/* 생활 점수 랭킹 */}
       <section className="life-section">
         <h2>생활 점수 랭킹</h2>
@@ -249,6 +303,7 @@ export default function LifePage() {
             </table>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );
