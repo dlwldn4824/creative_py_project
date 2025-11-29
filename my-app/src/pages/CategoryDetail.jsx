@@ -59,8 +59,8 @@ export default function CategoryDetail() {
   return (
     <div className="app-root">
       <header className="app-header">
-        <div className="logo" onClick={() => navigate("/")}>
-          로고
+        <div className="logo" onClick={() => navigate("/")} style={{ cursor: "pointer" }}>
+          창의설계입문
         </div>
         <div className="header-text">
           <h1>{meta.label} 상세 보기</h1>

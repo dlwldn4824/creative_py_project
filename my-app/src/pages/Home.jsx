@@ -198,7 +198,7 @@ export default function Home() {
     <div className="app-root">
       <header className="app-header">
         <div style={{ display: "flex", alignItems: "center", gap: "20px", flex: 1 }}>
-          <div className="logo">다이어터</div>
+          <div className="logo" onClick={() => navigate("/")} style={{ cursor: "pointer" }}>창의설계입문</div>
           <div className="header-text">
             <h1>나에게 맞는 주거 지역은?</h1>
             <p>서울에서 나에게 딱 맞는 동네를 찾는 주거 매칭 서비스</p>

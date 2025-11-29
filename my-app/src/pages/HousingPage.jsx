@@ -129,7 +129,7 @@ export default function HousingPage() {
     <div className="app-root">
       <header className="app-header" style={{ background: "linear-gradient(135deg, #fbcfe8 0%, #f9a8d4 100%)", color: "#000" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "20px", flex: 1 }}>
-          <div className="logo" style={{ color: "#000" }}>다이어터</div>
+          <div className="logo" onClick={() => navigate("/")} style={{ color: "#000", cursor: "pointer" }}>창의설계입문</div>
           <div className="header-text" style={{ color: "#000" }}>
             <h1 style={{ color: "#000" }}>나에게 맞는 주거 지역은?</h1>
             <p style={{ color: "#000" }}>서울에서 나에게 딱 맞는 동네를 찾는 주거 매칭 서비스</p>
